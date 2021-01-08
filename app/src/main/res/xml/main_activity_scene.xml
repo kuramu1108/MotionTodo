@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint android:id="@+id/fab_todo">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/fab_add"/>
+        </Constraint>
+        <Constraint android:id="@+id/fab_alarm">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/fab_todo" />
+        </Constraint>
+        <Constraint android:id="@+id/fab_calender">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/fab_alarm" />
+
+        </Constraint>
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@+id/start"
+        app:duration="1000"
+        app:motionInterpolator="linear">
+        <KeyFrameSet >
+            <KeyAttribute
+                app:motionTarget="@+id/fab_todo"
+                app:framePosition="0"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_todo"
+                app:framePosition="100"
+                android:alpha="1" />
+            <KeyPosition
+                app:motionTarget="@+id/fab_todo"
+                app:curveFit="spline"
+                app:transitionEasing="accelerate"
+                app:framePosition="30"
+                app:keyPositionType="pathRelative"
+                app:percentX="0.5"
+                app:percentY="-0.5" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_alarm"
+                app:framePosition="0"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_alarm"
+                app:framePosition="100"
+                android:alpha="1" />
+            <KeyPosition
+                app:motionTarget="@+id/fab_alarm"
+                app:curveFit="spline"
+                app:transitionEasing="accelerate"
+                app:framePosition="30"
+                app:keyPositionType="pathRelative"
+                app:percentX="0.5"
+                app:percentY="-0.5" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_calender"
+                app:framePosition="0"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_calender"
+                app:framePosition="100"
+                android:alpha="1" />
+            <KeyPosition
+                app:motionTarget="@+id/fab_calender"
+                app:curveFit="spline"
+                app:transitionEasing="accelerate"
+                app:framePosition="30"
+                app:keyPositionType="pathRelative"
+                app:percentX="0.5"
+                app:percentY="-0.5" />
+            <KeyPosition
+                app:motionTarget="@+id/fab_alarm"
+                app:keyPositionType="pathRelative"
+                app:percentX="0"
+                app:percentY="0" />
+            <KeyPosition
+                app:motionTarget="@+id/fab_calender"
+                app:keyPositionType="pathRelative"
+                app:percentX="0"
+                app:percentY="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_add"
+                app:framePosition="0"
+                android:rotation="0"
+                app:transitionEasing="decelerate" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_add"
+                app:framePosition="100"
+                android:rotation="135"
+                app:transitionEasing="decelerate" />
+            <KeyAttribute
+                app:motionTarget="@+id/fab_add"
+                app:framePosition="50"
+                android:rotation="-270" />
+        </KeyFrameSet>
+    </Transition>
+</MotionScene>
