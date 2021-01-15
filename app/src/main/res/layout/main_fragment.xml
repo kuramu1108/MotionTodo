@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/main_fragment_scene"
-    android:background="#EEEEEE"
+    android:background="#000000"
     tools:context=".ui.main.MainFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -193,7 +193,7 @@
             android:orientation="vertical">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/event_title"

@@ -10,19 +10,19 @@
             <Layout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/fab_add"/>
+                app:layout_constraintBottom_toTopOf="@+id/fab_alarm"/>
         </Constraint>
         <Constraint android:id="@+id/fab_alarm">
             <Layout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/fab_todo" />
+                app:layout_constraintBottom_toTopOf="@+id/fab_calender" />
         </Constraint>
         <Constraint android:id="@+id/fab_calender">
             <Layout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/fab_alarm" />
+                app:layout_constraintBottom_toTopOf="@+id/fab_add" />
 
         </Constraint>
     </ConstraintSet>

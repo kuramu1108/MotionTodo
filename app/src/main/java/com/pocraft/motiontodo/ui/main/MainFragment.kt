@@ -1,7 +1,6 @@
 package com.pocraft.motiontodo.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,14 @@ import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.pocraft.motiontodo.R
 import com.pocraft.motiontodo.databinding.MainFragmentBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 @ExperimentalCoroutinesApi
 class MainFragment : Fragment() {
@@ -54,24 +56,29 @@ class MainFragment : Fragment() {
                 }
             })
 
-            val todoAdapter = TodoAdapter()
+            val todoAdapter = TodoAdapter(onItemRemoveClicked = viewModel::removeItem)
             todoList.adapter = todoAdapter
-            val alarmAdapter = TodoAdapter()
+            val alarmAdapter = TodoAdapter(onItemRemoveClicked = viewModel::removeItem)
             alarmList.adapter = alarmAdapter
-            val eventAdapter = TodoAdapter()
+            val eventAdapter = TodoAdapter(onItemRemoveClicked = viewModel::removeItem)
             eventList.adapter = eventAdapter
 
             todoCard.setOnClickListener {
-                Log.d("POTEST", "${mainFragment.currentState}")
                 when (mainFragment.currentState) {
                     R.id.start -> mainFragment.transitionToState(R.id.end)
                     else -> mainFragment.transitionToStart()
                 }
             }
             alarmCard.setOnClickListener {
-                Log.d("POTEST", "${mainFragment.currentState}")
                 when (mainFragment.currentState) {
                     R.id.start -> mainFragment.transitionToState(R.id.alarm)
+                    else -> mainFragment.transitionToStart()
+                }
+            }
+
+            eventCard.setOnClickListener {
+                when (mainFragment.currentState) {
+                    R.id.start -> mainFragment.transitionToState(R.id.event)
                     else -> mainFragment.transitionToStart()
                 }
             }
@@ -82,23 +89,9 @@ class MainFragment : Fragment() {
                     alarmNum.text = state.alarms.size.toString()
                     eventNum.text = state.events.size.toString()
 
-                    when(state.transitionState) {
-                        TransitionState.FINISHED -> {
-                            when(mainFragment.currentState) {
-                                R.id.start -> {
-                                    todoAdapter.update(emptyList())
-                                    alarmAdapter.update(emptyList())
-                                }
-                                R.id.end -> todoAdapter.update(state.todos)
-                                R.id.alarm -> alarmAdapter.update(state.alarms)
-                            }
-                        }
-                        else -> {
-                            todoAdapter.update(emptyList())
-                            alarmAdapter.update(emptyList())
-                            eventAdapter.update(emptyList())
-                        }
-                    }
+                    todoAdapter.submitList(state.todos)
+                    alarmAdapter.submitList(state.alarms)
+                    eventAdapter.submitList(state.events)
                 }
             }
         }

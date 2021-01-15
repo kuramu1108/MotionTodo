@@ -2,6 +2,7 @@ package com.pocraft.motiontodo.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocraft.motiontodo.model.Item
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,15 +12,15 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class MainViewModel : ViewModel() {
-    private val todos = MutableStateFlow<List<String>>(emptyList())
-    private val alarms = MutableStateFlow<List<String>>(emptyList())
-    private val events = MutableStateFlow<List<String>>(emptyList())
+    private val todos = MutableStateFlow<List<Item>>(emptyList())
+    private val alarms = MutableStateFlow<List<Item>>(emptyList())
+    private val events = MutableStateFlow<List<Item>>(emptyList())
     private val transitionState = MutableStateFlow(TransitionState.NONE)
 
     data class ViewState(
-        val todos: List<String> = emptyList(),
-        val alarms: List<String> = emptyList(),
-        val events: List<String> = emptyList(),
+        val todos: List<Item> = emptyList(),
+        val alarms: List<Item> = emptyList(),
+        val events: List<Item> = emptyList(),
         val transitionState: TransitionState = TransitionState.NONE
     )
 
@@ -28,12 +29,21 @@ class MainViewModel : ViewModel() {
 
     private val _selectedCategory = MutableStateFlow(Category.NONE)
 
-    fun addItem(item: String) {
+    fun addItem(itemTitle: String) {
         when(_selectedCategory.value) {
             Category.NONE -> Unit
-            Category.TODO -> todos.add(item)
-            Category.ALARM -> alarms.add(item)
-            Category.EVENT -> events.add(item)
+            Category.TODO -> todos.add(itemTitle)
+            Category.ALARM -> alarms.add(itemTitle)
+            Category.EVENT -> events.add(itemTitle)
+        }
+    }
+
+    fun removeItem(item: Item) {
+        when(_selectedCategory.value) {
+            Category.NONE -> Unit
+            Category.TODO -> todos.remove(item)
+            Category.ALARM -> alarms.remove(item)
+            Category.EVENT -> events.remove(item)
         }
     }
 
@@ -48,10 +58,16 @@ class MainViewModel : ViewModel() {
         _selectedCategory.value = category
     }
 
-    private fun MutableStateFlow<List<String>>.add(item: String) {
-        val newMutableList = value.toMutableList()
-        newMutableList.add(item)
-        value = newMutableList
+    private fun MutableStateFlow<List<Item>>.add(itemTitle: String) {
+        value = value.toMutableList().apply {
+            add(Item(title = itemTitle))
+        }
+    }
+
+    private fun MutableStateFlow<List<Item>>.remove(item: Item) {
+        value = value.toMutableList().apply {
+            remove(item)
+        }
     }
 
     init {
